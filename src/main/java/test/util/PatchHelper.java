@@ -9,18 +9,21 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * Utility class allows to apply patch
+ */
 @Component
 @AllArgsConstructor
 public class PatchHelper {
 
     private final ObjectMapper objectMapper;
 
-    public <T> T apply(JsonNode updates, T currentState, Class<T> type) {
+    public <T> T apply(T updates, T currentState, Class<T> type) {
+        JsonNode node = updates == null
+                ? objectMapper.createObjectNode()
+                : objectMapper.convertValue(updates, JsonNode.class);
         try {
-            if (updates == null || updates.isNull()) {
-                updates = objectMapper.createObjectNode();
-            }
-            JsonMergePatch patch = JsonMergePatch.fromJson(updates);
+            JsonMergePatch patch = JsonMergePatch.fromJson(node);
             JsonNode mergedSite = patch.apply(objectMapper.valueToTree(currentState));
             return objectMapper.readerFor(type).readValue(mergedSite);
         } catch (IOException | JsonPatchException e) {

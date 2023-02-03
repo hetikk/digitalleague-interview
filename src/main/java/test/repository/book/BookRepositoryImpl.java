@@ -5,7 +5,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import test.model.book.Book;
 import test.model.exception.EntityNotFoundException;
-import test.service.BookRepository;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,14 +36,22 @@ public class BookRepositoryImpl implements BookRepository {
     public Book update(Book book) {
         BookEntity entity = new BookEntity();
         bookMapper.fillEntity(book, entity);
-        bookDao.update(entity);
+
+        int updatedRowsCount = bookDao.update(entity);
+        if (updatedRowsCount == 0) {
+            throw new EntityNotFoundException("Book with id=%d not found");
+        }
+
         entity = bookDao.getOne(book.getId());
         return bookMapper.toDto(entity);
     }
 
     @Override
     public void delete(Long id) {
-        long delete = bookDao.delete(id);
+        long deletedRowsCount = bookDao.delete(id);
+        if (deletedRowsCount == 0) {
+            throw new EntityNotFoundException("Book with id=%d not found");
+        }
     }
 
 }

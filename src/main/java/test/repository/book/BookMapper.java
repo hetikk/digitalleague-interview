@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import test.model.book.Book;
 import test.repository.BaseMapper;
 
+/**
+ * Class that implements mapping Book to BookEntity and back
+ */
 @Component
 public class BookMapper extends BaseMapper<Book, BookEntity> {
 

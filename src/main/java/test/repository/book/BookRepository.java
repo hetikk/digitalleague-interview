@@ -1,4 +1,4 @@
-package test.service;
+package test.repository.book;
 
 import test.model.book.Book;
 

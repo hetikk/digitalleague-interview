@@ -18,7 +18,7 @@ public class BookEntity implements BaseEntity {
 
     private String author;
 
-    private int price;
+    private Integer price;
 
     private String publisher;
 

@@ -22,7 +22,7 @@ public class Book implements Dto {
 
     private String author;
 
-    private int price;
+    private Integer price;
 
     private String publisher;
 
